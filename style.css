@@ -15,7 +15,7 @@
 }
 
 body {
-    font-family: 'Source Code Pro', Courier, monospace;
+    font-family:  'JetBrains Mono', Courier, monospace;
     background: var(--bg);
     color: var(--text);
     height: 100vh;
@@ -38,13 +38,13 @@ header {
     font-weight: normal;
     letter-spacing: 0.1em;
     color: var(--text);
-    font-family: 'Source Code Pro', Courier, monospace;
+    font-family:  'JetBrains Mono', Courier, monospace;
 }
 
 .logo span { color: var(--muted); }
 
 .phase-badge {
-    font-family: 'Source Code Pro', Courier, monospace;
+    font-family:  'JetBrains Mono', Courier, monospace;
     font-size: 11px;
     padding: 4px 12px;
     border-radius: 3px;
@@ -86,7 +86,7 @@ header {
 }
 
 .problem-label {
-    font-family: 'Source Code Pro', Courier, monospace;
+    font-family:  'JetBrains Mono', Courier, monospace;
     font-size: 10px;
     color: var(--muted);
     letter-spacing: 0.1em;
@@ -98,7 +98,7 @@ header {
     font-size: 13px;
     line-height: 1.6;
     color: var(--text);
-    font-family: 'Source Code Pro', Courier, monospace;
+    font-family:  'JetBrains Mono', Courier, monospace;
 }
 
 .editor-tabs {
@@ -110,7 +110,7 @@ header {
 
 .tab {
     padding: 10px 20px;
-    font-family: 'Source Code Pro', Courier, monospace;
+    font-family:  'JetBrains Mono', Courier, monospace;
     font-size: 12px;
     color: var(--muted);
     cursor: pointer;
@@ -146,7 +146,7 @@ header {
     border: none;
     outline: none;
     padding: 20px 24px;
-    font-family: 'Source Code Pro', Courier, monospace;
+    font-family:  'JetBrains Mono', Courier, monospace;
     font-size: 13px;
     line-height: 1.8;
     resize: none;
@@ -170,7 +170,7 @@ header {
 }
 
 .btn {
-    font-family: 'Source Code Pro', Courier, monospace;
+    font-family:  'JetBrains Mono', Courier, monospace;
     font-size: 12px;
     font-weight: normal;
     padding: 7px 18px;
@@ -203,7 +203,7 @@ header {
 }
 
 .hint {
-    font-family: 'Source Code Pro', Courier, monospace;
+    font-family:  'JetBrains Mono', Courier, monospace;
     font-size: 11px;
     color: var(--muted);
     flex: 1;
@@ -227,14 +227,14 @@ header {
     font-size: 12px;
     font-weight: normal;
     color: var(--text);
-    font-family: 'Source Code Pro', Courier, monospace;
+    font-family:  'JetBrains Mono', Courier, monospace;
     letter-spacing: 0.05em;
 }
 
 .chat-subtitle {
     font-size: 11px;
     color: var(--muted);
-    font-family: 'Source Code Pro', Courier, monospace;
+    font-family:  'JetBrains Mono', Courier, monospace;
     margin-top: 2px;
 }
 
@@ -258,7 +258,7 @@ header {
     border-radius: var(--radius);
     font-size: 12px;
     line-height: 1.7;
-    font-family: 'Source Code Pro', Courier, monospace;
+    font-family:  'JetBrains Mono', Courier, monospace;
 }
 
 .msg-ai {
@@ -282,7 +282,7 @@ header {
     border: 1px solid #1f1f1f;
     color: var(--muted);
     align-self: center;
-    font-family: 'Source Code Pro', Courier, monospace;
+    font-family:  'JetBrains Mono', Courier, monospace;
     font-size: 10px;
     text-align: center;
     border-radius: 3px;
@@ -333,7 +333,7 @@ header {
     border: 1px solid #1f1f1f;
     border-radius: 3px;
     color: var(--text);
-    font-family: 'Source Code Pro', Courier, monospace;
+    font-family:  'JetBrains Mono', Courier, monospace;
     font-size: 12px;
     padding: 10px 14px;
     outline: none;
@@ -384,7 +384,7 @@ header {
 }
 
 .lock-text {
-    font-family: 'Source Code Pro', Courier, monospace;
+    font-family:  'JetBrains Mono', Courier, monospace;
     font-size: 11px;
     color: var(--muted);
     text-align: center;
