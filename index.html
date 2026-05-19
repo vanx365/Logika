@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logika — aprende a pensar antes de codear</title>
+</head>
+<body class="theme-dark-mode">
+
+<header>
+  <div class="logo">Logika</div>
+  <div style="display:flex;align-items:center;gap:16px">
+    <div class="theme-selector">
+      <div class="theme-btn theme-dark selected"onclick="setTheme('dark')"  title="VS Dark"></div>
+      <div class="theme-btn theme-black"onclick="setTheme('black')" title="Negro puro"></div>
+      <div class="theme-btn theme-gray"onclick="setTheme('gray')"  title="Gris"></div>
+      <div class="theme-btn theme-light"onclick="setTheme('light')" title="Claro"></div>
+    </div>
+    <div class="phases">
+      <div class="phase-badge active" id="badge-spec">01 especificación</div>
+      <div class="phase-badge" id="badge-code">02 código</div>
+      <div class="phase-badge" id="badge-review">03 revisión</div>
+    </div>
+  </div>
+</header>
+
+<div class="main">
+  <div class="left-panel">
+    <div class="problem-bar">
+      <div class="problem-label">problema</div>
+      <div class="problem-text">
+        Escribe un programa que lea un número entero <code style="background:#222;padding:1px 6px;border-radius:4px;font-family:'DM Mono',monospace;font-size:12px;">n</code> e imprima la suma de todos los números impares del 1 hasta <code style="background:#222;padding:1px 6px;border-radius:4px;font-family:'DM Mono',monospace;font-size:12px;">n</code>.
+      </div>
+    </div>
+
+    <div class="editor-tabs">
+      <div class="tab active" id="tab-spec" onclick="switchTab('spec')">spec.txt</div>
+      <div class="tab" id="tab-code" onclick="switchTab('code')">main.cpp</div>
+    </div>
+
+    <div class="editor-container">
+      <div id="spec-editor">
+        <textarea class="spec-textarea" id="spec-textarea"
+          placeholder="Describe qué debería hacer el programa antes de escribir código.
+
+Ejemplo:
+— ¿Qué recibe como entrada?
+— ¿Qué devuelve como salida?
+— ¿Qué casos especiales hay que considerar?
+— ¿Cuándo termina el ciclo?"></textarea>
+      </div>
+
+      <div id="code-editor">
+        <div class="lock-overlay" id="lock-overlay">
+          <div class="lock-icon">🔒</div>
+          <div class="lock-text">El editor se abre cuando<br>tu especificación esté aprobada</div>
+        </div>
+        <div id="monaco-container"></div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <span class="hint" id="bottom-hint">Escribe tu especificación y envíala al tutor →</span>
+      <button class="btn btn-secondary" onclick="resetAll()">reiniciar</button>
+      <button class="btn btn-primary" id="main-action" onclick="handleMainAction()">enviar spec</button>
+    </div>
+  </div>
+
+  <!-- CHAT -->
+  <div class="right-panel">
+    <div class="chat-header">
+      <div class="chat-title">Tutor socrático</div>
+      <div class="chat-subtitle">pregunta — no da respuestas</div>
+    </div>
+
+    <div class="chat-messages" id="chat-messages">
+      <div class="msg msg-ai">
+        Hola. Antes de escribir código, necesito que me cuentes <strong>qué debería hacer el programa</strong>. Descríbelo con tus propias palabras en el editor de la izquierda y luego envíamelo.
+      </div>
+    </div>
+
+    <div class="chat-input-area">
+      <textarea class="chat-input" id="chat-input" placeholder="responde la pregunta del tutor..." rows="1"
+        onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <button class="send-btn" id="send-btn" onclick="sendMessage()">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 21l21-9L2 3v7l15 2-15 2z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Monaco Editor -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
