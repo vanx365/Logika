@@ -174,7 +174,7 @@ function switchToPhase(p) {
 phase = p;
 document.getElementById('badge-code').classList.remove('active');
 document.getElementById('badge-review').classList.add('active');
-ddocument.getElementById('main-action').disabled = false;
+document.getElementById('main-action').disabled = false;
 document.getElementById('main-action').textContent = 'enviar código de nuevo';
 document.getElementById('bottom-hint').textContent = 'Revisando divergencias entre tu spec y tu código...';
 }
