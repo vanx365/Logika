@@ -78,10 +78,12 @@ if (!spec) {
     return;
 }
 
+const problema = document.getElementById('problem-text').value.trim();
+
 addMessage('user', `Mi especificación:\n\n${spec}`);
 conversationHistory.push({
     role: 'user',
-    content: `El estudiante escribió esta especificación para el problema "suma de impares hasta n":\n\n${spec}\n\nEvalúala y haz UNA pregunta socrática sobre lo que sea ambiguo o incompleto. Si está completa y correcta, responde con SPEC_APROBADA.`
+    content: `El estudiante escribió esta especificación para el siguiente problema:\n\n${problema}\n\nEspecificación del estudiante:\n\n${spec}\n\nEvalúala y haz UNA pregunta socrática sobre lo que sea ambiguo o incompleto. Si está completa y correcta, responde con SPEC_APROBADA.`
 });
 
 await callClaude();
