@@ -9,13 +9,12 @@ REGLAS ESTRICTAS:
 6. Si la especificación es suficientemente clara y correcta, responde EXACTAMENTE con: "SPEC_APROBADA: [un elogio breve de una frase]"
 7. Habla en español, tono directo y amigable.`;
 
-let phase = 'spec'; // 'spec' | 'code' | 'review'
+let phase = 'spec';
 let conversationHistory = [];
 let monacoEditor = null;
 let specApproved = false;
 let submittedCode = '';
 
-// Monaco init
 require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' } });
 require(['vs/editor/editor.main'], function() {
 monacoEditor = monaco.editor.create(document.getElementById('monaco-container'), {
@@ -49,11 +48,8 @@ light: 'theme-light-mode'
 };
 
 function setTheme(name) {
-  // update body class
 document.body.className = BODY_CLASSES[name];
-  // update monaco
 if (monacoEditor) monaco.editor.setTheme(MONACO_THEMES[name]);
-  // update selected dot
 document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('selected'));
 document.querySelector(`.theme-${name}`).classList.add('selected');
 }
