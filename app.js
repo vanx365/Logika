@@ -79,7 +79,6 @@ if (!spec) {
 }
 
 const problema = document.getElementById('problem-text').value.trim();
-console.log('PROBLEMA:', problema);
 
 addMessage('user', `Mi especificación:\n\n${spec}`);
 conversationHistory.push({
