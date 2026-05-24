@@ -174,6 +174,13 @@ const monacoLangs = {
     'Java': 'java',
     'JavaScript': 'javascript'
 };
+const templates = {
+    'C++': '#include <iostream>\nusing namespace std;\n\nint main() {\n    // escribe tu solución aquí\n    \n    return 0;\n}',
+    'Python': '# escribe tu solución aquí\n',
+    'Java': 'public class Main {\n    public static void main(String[] args) {\n        // escribe tu solución aquí\n    }\n}',
+    'JavaScript': '// escribe tu solución aquí\n'
+};
+monacoEditor.setValue(templates[lenguaje] || templates['C++']);
 monaco.editor.setModelLanguage(monacoEditor.getModel(), monacoLangs[lenguaje] || 'cpp');
 if (monacoEditor) monacoEditor.layout();
 }
