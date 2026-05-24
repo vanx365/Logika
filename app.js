@@ -168,6 +168,13 @@ document.getElementById('bottom-hint').textContent = 'Escribe tu solución en C+
 switchTab('code');
 phase = 'code';
 const lenguaje = document.getElementById('language-select').value;
+const extensiones = {
+'C++': 'main.cpp',
+'Python': 'main.py',
+'Java': 'Main.java',
+'JavaScript': 'main.js'
+};
+document.getElementById('tab-code').textContent = extensiones[lenguaje] || 'main.cpp';
 const monacoLangs = {
     'C++': 'cpp',
     'Python': 'python',
