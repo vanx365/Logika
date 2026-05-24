@@ -167,6 +167,14 @@ document.getElementById('main-action').textContent = 'enviar código';
 document.getElementById('bottom-hint').textContent = 'Escribe tu solución en C++';
 switchTab('code');
 phase = 'code';
+const lenguaje = document.getElementById('language-select').value;
+const monacoLangs = {
+    'C++': 'cpp',
+    'Python': 'python',
+    'Java': 'java',
+    'JavaScript': 'javascript'
+};
+monaco.editor.setModelLanguage(monacoEditor.getModel(), monacoLangs[lenguaje] || 'cpp');
 if (monacoEditor) monacoEditor.layout();
 }
 
