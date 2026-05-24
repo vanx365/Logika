@@ -171,7 +171,7 @@ if (monacoEditor) monacoEditor.layout();
 }
 
 function switchToPhase(p) {
-phase = p;
+phase = 'code';
 document.getElementById('badge-code').classList.remove('active');
 document.getElementById('badge-review').classList.add('active');
 document.getElementById('main-action').disabled = false;
