@@ -258,16 +258,18 @@ const languageIds = {
     'JavaScript': 63
 };
 
-const consolePanel = document.getElementById('console-panel');
+const consolePanel = document.getElementById('console-output');
 consolePanel.innerHTML = '<span style="color:#555">// ejecutando...</span>';
 
 try {
+    const stdin = document.getElementById('stdin-input').value;
     const response = await fetch('/api/run', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-        code: code,
-        language_id: languageIds[lenguaje] || 54
+    code: code,
+    language_id: languageIds[lenguaje] || 54,
+    stdin: stdin
     })
     });
 
