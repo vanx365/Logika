@@ -242,7 +242,40 @@ function autoResize(el) {
 el.style.height = 'auto';
 el.style.height = Math.min(el.scrollHeight, 100) + 'px';
 }
+async function runCode() {
+if (!monacoEditor) return;
+const code = monacoEditor.getValue();
+const lenguaje = document.getElementById('language-select').value;
 
+const languageIds = {
+    'C++': 54,
+    'Python': 71,
+    'Java': 62,
+    'JavaScript': 63
+};
+
+const consolePanel = document.getElementById('console-panel');
+consolePanel.innerHTML = '<span style="color:#555">// ejecutando...</span>';
+
+try {
+    const response = await fetch('/api/run', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        code: code,
+        language_id: languageIds[lenguaje] || 54
+    })
+    });
+
+    const data = await response.json();
+    const output = data.stdout || data.stderr || data.compile_output || 'Sin output';
+    consolePanel.innerHTML = `<span style="color:#ccc">${output}</span>`;
+
+} catch (err) {
+    consolePanel.innerHTML = '<span style="color:#f55">// error de conexión</span>';
+    console.error(err);
+}
+}
 function resetAll() {
 if (!confirm('¿Reiniciar todo?')) return;
 location.reload();

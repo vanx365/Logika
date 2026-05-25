@@ -66,9 +66,12 @@ Ejemplo:
         <div id="monaco-container"></div>
       </div>
     </div>
-
+    <div id="console-panel" style="height:120px;background:#0a0a0a;border-top:1px solid var(--border);padding:12px 24px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#aaa;overflow-y:auto;">
+      <span style="color:#555">// output aparece aquí</span>
+    </div>
     <div class="bottom-bar">
       <span class="hint" id="bottom-hint">Escribe tu especificación y envíala al tutor →</span>
+      <button class="btn btn-secondary" onclick="runCode()">ejecutar</button>
       <button class="btn btn-secondary" onclick="resetAll()">reiniciar</button>
       <button class="btn btn-primary" id="main-action" onclick="handleMainAction()">enviar spec</button>
     </div>
