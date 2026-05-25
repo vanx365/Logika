@@ -39,7 +39,11 @@ monacoEditor = monaco.editor.create(document.getElementById('monaco-container'),
     parameterHints: { enabled: false },
 });
 });
-
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('problem-text').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') e.preventDefault();
+    });
+});
 const MONACO_THEMES = {
 dark: 'vs-dark',
 black: 'hc-black',
