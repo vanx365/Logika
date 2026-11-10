@@ -120,7 +120,7 @@ logika/
 
 | Nombre | Rol |
 |---|---|
-| Edwin Sebastian Coaguila (Vanx) | <!-- [COMPLETAR] --> |
+| Edwin Sebastian Coaguila Suarez| <!-- [COMPLETAR] --> |
 
 Estudiantes de Ingeniería de Software, Universidad de La Salle, Arequipa.
 
