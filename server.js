@@ -32,7 +32,7 @@ try {
 
 app.post('/api/run', async (req, res) => {
 try {
-    const { code, language_id } = req.body;
+    const { code, language_id, stdin } = req.body;
     const response = await fetch('https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=true', {
     method: 'POST',
     headers: {
@@ -43,7 +43,7 @@ try {
     body: JSON.stringify({
         source_code: code,
         language_id: language_id,
-        stdin: ''
+        stdin: stdin || ''
     })
     });
     const data = await response.json();

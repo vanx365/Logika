@@ -145,7 +145,7 @@ try {
     const data = await response.json();
     removeTyping(typingId);
 
-    const reply = data.content?.[0]?.text || 'Error al obtener respuesta.';
+    const reply = data.content?.[0]?.text || 'Error:' + (data.error || 'No se recibió respuesta del modelo.');
     conversationHistory.push({ role: 'assistant', content: reply });
 
     if (reply.includes('SPEC_APROBADA')) {
