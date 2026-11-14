@@ -1,1 +1,13 @@
-{"name":"logika","version":"1.0.0","type":"module","dependencies":{"dotenv":"^16.6.1","express":"^4.22.2"}}
+{
+  "name": "logika",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^4.22.2"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check app.js"
+  }
+}
