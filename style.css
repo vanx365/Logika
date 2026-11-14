@@ -576,3 +576,48 @@ details p {
     transition: none !important;
   }
 }
+
+.terminal {
+  padding: 18px;
+  background: #1e2823;
+  color: #e4ece6;
+  border-radius: 10px;
+}
+.terminal #output {
+  background: transparent;
+  color: inherit;
+  border: 0;
+  min-height: 160px;
+  padding: 10px 0;
+}
+.terminal #run-status {
+  color: #b7c9bc;
+}
+.terminal #run-status[data-kind="error"] {
+  color: #ffb5a6;
+}
+.terminal-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.terminal input {
+  min-width: 0;
+  flex: 1;
+  background: #28382e;
+  border: 1px solid #6b8272;
+  border-radius: 6px;
+  color: #fff;
+  padding: 10px;
+  font:
+    13px "IBM Plex Mono",
+    monospace;
+}
+.terminal label,
+#terminal-help {
+  color: #b7c9bc;
+  font-size: 12px;
+}
+#terminal-help {
+  margin-top: 12px;
+}

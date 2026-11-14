@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "node server.js",
-    "check": "node --check server.js && node --check app.js"
+    "check": "node --check server.js && node --check runner.js && node --check app.js",
+    "runner:build": "docker build -f Dockerfile.runner -t logika-runner:local ."
   }
 }

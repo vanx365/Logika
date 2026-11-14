@@ -64,25 +64,19 @@
                 <option>Java</option>
                 <option>JavaScript</option>
               </select>
-              <label for="plan">¿Qué pasos seguirías para resolverlo?</label>
-              <p class="field-help" id="plan-help">
-                Cuenta tu estrategia en unas frases: qué harías primero, qué
-                decisiones tomarías y con qué caso comprobarías tu idea.
-              </p>
               <textarea
                 id="plan"
-                rows="5"
-                aria-describedby="plan-help"
-                placeholder="Primero voy a…&#10;Después…&#10;Comprobaría mi idea con…"
+                hidden
+                aria-label="Estrategia acordada"
               ></textarea>
+              <p class="field-help">
+                Explica tu estrategia directamente en el chat. El tutor te hará
+                preguntas y abrirá el editor cuando esté lista.
+              </p>
               <p id="plan-feedback" class="feedback" role="status"></p>
-              <div class="actions">
-                <span id="plan-status"
-                  >Si te atascas, cuenta hasta dónde llegaste. El tutor te ayudará.</span
-                ><button id="approve-button" class="primary">
-                  Revisar mi plan →
-                </button>
-              </div>
+              <p id="plan-status" role="status">
+                Continúa en el chat con tu tutor.
+              </p>
             </div>
           </section>
           <section id="code-view" hidden>
@@ -113,7 +107,7 @@
                 <h2>Ejecutando tu programa</h2>
                 <p>El editor se habilitará al recibir el resultado.</p>
                 <button id="cancel-button" class="secondary">
-                  Cancelar espera
+                  Detener programa
                 </button>
               </div>
             </div>
@@ -121,40 +115,44 @@
               <div class="test-heading">
                 <div>
                   <h2 id="test-title">Prueba tu programa</h2>
-                  <p>Escribe los datos que tu código va a leer y ejecútalo.</p>
+                  <p>
+                    Ejecuta y responde en la terminal cuando tu programa pida
+                    datos.
+                  </p>
                 </div>
                 <button id="run-button" class="primary">▶ Ejecutar</button>
               </div>
-              <div class="test-grid">
-                <div>
-                  <label for="stdin"
-                    >Datos de entrada <span>opcional</span></label
-                  ><textarea
-                    id="stdin"
-                    rows="4"
-                    placeholder="Ejemplo:&#10;4&#10;7"
-                    aria-describedby="input-help"
-                  ></textarea>
-                  <p id="input-help" class="field-help">
-                    Se enviarán al programa tal como los escribas. Si no pide
-                    datos, deja este campo vacío.
-                  </p>
+              <div class="terminal">
+                <div class="label-row">
+                  <span>Terminal</span
+                  ><span id="run-status" role="status">Sin ejecutar</span>
                 </div>
-                <div>
-                  <div class="label-row">
-                    <label for="output">Resultado</label
-                    ><span id="run-status" role="status">Sin ejecutar</span>
+                <pre id="output" tabindex="0" aria-live="polite">
+Ejecuta tu programa para comenzar.</pre>
+                <form id="terminal-form" hidden>
+                  <label for="stdin">Entrada de la terminal</label>
+                  <div class="terminal-input">
+                    <span aria-hidden="true">›</span
+                    ><input
+                      id="stdin"
+                      autocomplete="off"
+                      placeholder="Responde aquí si tu programa pide datos"
+                    /><button id="terminal-send" class="secondary">
+                      Enviar ↵
+                    </button>
                   </div>
-                  <pre id="output" tabindex="0" aria-live="polite">
-Ejecuta tu código para ver aquí la salida.</pre>
-                </div>
+                </form>
+                <p id="terminal-help">
+                  Los mensajes que piden datos los escribe tu programa.
+                </p>
               </div>
             </section>
             <div class="review-action">
               <div>
                 <h2>¿El resultado coincide con tu idea?</h2>
                 <p>
-                  Envía tu código al tutor para revisar cómo aplicaste tu plan.
+                  Cada ejecución se envía al tutor automáticamente. También
+                  puedes pedir una revisión sin ejecutar.
                 </p>
               </div>
               <button id="review-button" class="secondary">

@@ -1,2 +1,13 @@
+# Dependencias instaladas
+node_modules/
+
+# Credenciales y configuraciones locales
 .env
-node_modules
+.env.*
+!.env.example
+
+# Registros y archivos temporales
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
