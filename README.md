@@ -125,7 +125,7 @@ ejecutar npm.cmd start.
 ## Equipo
 
 | Nombre |
-|---|---|
+|---|
 | Edwin Sebastian Coaguila Suarez|
 |Jasser Carbajal Sequeiros|
 |Cesar Hilguiera Apaza|
