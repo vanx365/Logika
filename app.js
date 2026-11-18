@@ -204,7 +204,7 @@ async function askTutor(content, kind, displayText) {
       {
         model: "claude-haiku-4-5-20251001",
         max_tokens: 1000,
-        system: prompt,
+        system: Prompt,
         context: {
           problem: $("problem").value,
           language: $("language").value,
