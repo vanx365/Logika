@@ -126,8 +126,8 @@ Para tus clientes puedes compilar **LogikaSetup.exe** con el dominio de su insti
 ## Hoja de ruta
 
 - [x] Prototipo funcional con editor, ejecución y tutor socrático
-- [ ] Validación con estudiantes reales
-- [ ] <!-- [COMPLETAR] Siguiente funcionalidad -->
+- [x] Validación con estudiantes reales
+- [x] Safe Exam
 - [x] Panel docente con seguimiento de entregas y devolución de calificaciones
 
 ## Equipo
