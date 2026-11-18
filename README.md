@@ -36,6 +36,8 @@ Inspirado en proyectos como **Maieutic**, adaptado al contexto de estudiantes de
 - Editor de código integrado (Monaco Editor)
 - Ejecución de código en sandbox (Judge0 CE)
 - Tutor socrático impulsado por la API de Claude
+- Aula con clases por código, ejercicios con vencimiento, borradores, entregas y calificación.
+- Evaluaciones para Windows con Safe Exam Browser. El profesor puede exigirlo por tarea y el administrador puede exigirlo para toda la aplicación.
 - <!-- [COMPLETAR] Lenguajes soportados -->
 - <!-- [COMPLETAR] Banco de ejercicios / niveles -->
 - <!-- [COMPLETAR] Registro de progreso, si existe -->
@@ -69,7 +71,7 @@ Inspirado en proyectos como **Maieutic**, adaptado al contexto de estudiantes de
 
 Requisitos del equipo que ejecutará Logika:
 
-- Node.js con npm y soporte para fetch y AbortSignal.timeout (Node.js 22 o posterior).
+- Node.js 22.13 o posterior con npm y el módulo integrado node:sqlite.
 - Git.
 - Docker Desktop con contenedores Linux en Windows o macOS, o Docker Engine en Linux. En Windows, WSL 2 y virtualización deben estar habilitados.
 - Una clave propia de la API de Anthropic con acceso al modelo configurado y saldo o facturación disponibles.
@@ -106,6 +108,12 @@ ejecutar npm.cmd start.
 | PORT | Puerto del servidor, 3000 por defecto. |
 | RAPIDAPI_KEY | Opcional, solo para el endpoint antiguo de Judge0. La terminal Docker no la usa. |
 
+### Aula y evaluaciones en Windows
+
+Abre **Mis clases** desde el laboratorio o entra en `/aula`. El aula permite publicar, resolver y calificar ejercicios sin configurar una clave de IA. La terminal utiliza la imagen Docker de Logika. La guía incluye el primer acceso del profesor, las variables del aula y la preparación del archivo de examen para Windows. [Guía del aula y Safe Exam Browser](AULA.md)
+
+Para tus clientes puedes compilar **LogikaSetup.exe** con el dominio de su institución. Una vez instalado, el alumno abre Logika, inicia sesión y pulsa **Empezar examen**. [Instalador y compilación por centro](installer/README.md)
+
 ### Archivos del proyecto
 
 - index.html, style.css y app.js contienen la interfaz.
@@ -120,7 +128,7 @@ ejecutar npm.cmd start.
 - [x] Prototipo funcional con editor, ejecución y tutor socrático
 - [ ] Validación con estudiantes reales
 - [ ] <!-- [COMPLETAR] Siguiente funcionalidad -->
-- [ ] <!-- [COMPLETAR] Panel para docentes, si es parte del plan -->
+- [x] Panel docente con seguimiento de entregas y devolución de calificaciones
 
 ## Equipo
 

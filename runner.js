@@ -24,10 +24,10 @@ const runtimes = {
   63: { file: "main.js", command: "exec node /source/main.js" },
 };
 
-export function registerRunner(app) {
-  app.post("/api/terminal/input", (req, res) => {
+export function registerRunner(app, route = "/api/terminal") {
+  app.post(route + "/input", (req, res) => {
     const session = sessions.get(req.body.id);
-    if (!session?.process || session.finished)
+    if (!session?.process || session.finished || session.owner !== req.runnerOwner)
       return res.status(410).json({ error: "La ejecución ya terminó." });
     if (
       typeof req.body.input !== "string" ||
@@ -50,13 +50,13 @@ export function registerRunner(app) {
     });
   });
 
-  app.post("/api/terminal/cancel", (req, res) => {
+  app.post(route + "/cancel", (req, res) => {
     const session = sessions.get(req.body.id);
-    session?.stop("Ejecución detenida.");
+    if (session && session.owner === req.runnerOwner) session.stop("Ejecución detenida.");
     res.json({ ok: true });
   });
 
-  app.post("/api/terminal", async (req, res) => {
+  app.post(route, async (req, res) => {
     const runtime = runtimes[req.body.language_id];
     if (!runtime || typeof req.body.code !== "string" || !req.body.code.trim())
       return res
@@ -71,7 +71,7 @@ export function registerRunner(app) {
         });
     const id = randomUUID();
     const name = "logika-" + id;
-    const session = { process: null, finished: false, stop: () => {} };
+    const session = { owner: req.runnerOwner, process: null, finished: false, stop: () => {} };
     sessions.set(id, session);
     let directory;
     let timer;
@@ -139,10 +139,9 @@ export function registerRunner(app) {
       );
       session.process = child;
       child.stdin.on("error", () => {});
-      timer = setTimeout(
-        () => session.stop("Se alcanzó el límite de 90 segundos."),
-        90000,
-      );
+      const remaining = Math.min(90000, (req.runnerDeadline ?? Infinity) - Date.now());
+      timer = setTimeout(() => session.stop(remaining < 90000
+        ? "El plazo de la tarea terminó." : "Se alcanzó el límite de 90 segundos."), Math.max(1, remaining));
       for (const [type, stream] of [
         ["stdout", child.stdout],
         ["stderr", child.stderr],

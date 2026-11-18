@@ -27,7 +27,13 @@ const languages = {
     template: "// Escribe tu solución aquí\n",
   },
 };
-const storageKey = "logika.exercise.v2";
+const legacyDraftKey = "logika.exercise.v2";
+const activeDraftPointer = legacyDraftKey + ".active";
+let storageKey = legacyDraftKey;
+
+function activeDraftKey() {
+  return localStorage.getItem(activeDraftPointer) || legacyDraftKey;
+}
 let editor = null;
 let approved = false;
 let reviewed = false;
@@ -72,6 +78,10 @@ function message(role, text) {
 
 function save() {
   try {
+    if (!window.history.state?.tutorDraftKey && storageKey !== activeDraftKey()) {
+      $("save-state").textContent = "Hay un ejercicio más reciente en otra pestaña";
+      return;
+    }
     localStorage.setItem(
       storageKey,
       JSON.stringify({
@@ -194,7 +204,7 @@ async function askTutor(content, kind, displayText) {
       {
         model: "claude-haiku-4-5-20251001",
         max_tokens: 1000,
-        system: prompt,
+        system: Prompt,
         context: {
           problem: $("problem").value,
           language: $("language").value,
@@ -344,9 +354,6 @@ async function runCode() {
       const data = await response.json();
       throw new Error(data.error || "No se pudo abrir la terminal.");
     }
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = "";
     function receive(event) {
       if (event.type === "start") {
         terminalId = event.id;
@@ -371,17 +378,7 @@ async function runCode() {
         if (event.message) appendOutput("\n" + event.message);
       }
     }
-    while (true) {
-      const { value, done } = await reader.read();
-      buffer += decoder.decode(value, { stream: !done });
-      const lines = buffer.split("\n");
-      buffer = lines.pop();
-      for (const line of lines) if (line.trim()) receive(JSON.parse(line));
-      if (done) {
-        if (buffer.trim()) receive(JSON.parse(buffer));
-        break;
-      }
-    }
+    await readTerminal(response, receive);
     if (!result && !failure)
       throw new Error("Se perdió la conexión antes de recibir el resultado.");
     $("run-status").textContent = failure
@@ -475,15 +472,28 @@ $("reset-button").addEventListener("click", () => {
     )
   )
     return;
+  const random = crypto.getRandomValues(new Uint32Array(4));
+  const newKey = legacyDraftKey + "." + Array.from(random).join("-");
   try {
-    localStorage.removeItem(storageKey);
-  } catch {}
+    const previous = activeDraftKey();
+    // Each tab saves to the key it opened, even if an old request finishes later.
+    localStorage.setItem(activeDraftPointer, newKey);
+    localStorage.removeItem(previous);
+    if (window.history.state?.tutorDraftKey) {
+      const { tutorDraftKey, ...state } = window.history.state;
+      window.history.replaceState(state, "");
+    }
+  } catch {
+    // Storage can allow reading old drafts while refusing writes or deletion.
+    window.history.replaceState({ ...window.history.state, tutorDraftKey: newKey }, "");
+  }
   location.reload();
 });
 for (const id of ["problem", "plan", "language", "code", "stdin"])
   $(id).addEventListener("input", save);
 
 try {
+  storageKey = window.history.state?.tutorDraftKey || activeDraftKey();
   const saved = JSON.parse(localStorage.getItem(storageKey));
   if (saved && languages[saved.language]) {
     for (const id of ["problem", "plan", "language", "code", "stdin"])
