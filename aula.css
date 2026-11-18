@@ -1,0 +1,44 @@
+.aula { max-width: 1200px; }
+.header-actions a { color: var(--green); font-weight: 600; }
+.panel { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: clamp(18px, 3vw, 32px); min-width: 0; }
+.access { margin: 5vh auto; max-width: 420px; }
+.install-link { margin-top: 16px; }
+.aula a { color: var(--green); }
+.aula h2 { font-size: 17px; }
+.aula form { display: grid; gap: 14px; }
+.access form, .access > button, .aula details form { margin-top: 18px; }
+.aula label { display: grid; gap: 5px; }
+.aula input { width: 100%; font: inherit; background: white; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; color: var(--ink); }
+.aula input:focus-visible { outline: 2px solid var(--green); }
+.aula button { justify-self: start; }
+.aula small { color: var(--muted); font-weight: 400; }
+.class-layout { display: grid; grid-template-columns: minmax(205px, 275px) minmax(0, 1fr); gap: 22px; align-items: start; }
+.courses nav { display: grid; margin: 12px 0 22px; gap: 5px; }
+.courses nav button { text-align: left; width: 100%; background: transparent; color: var(--ink); }
+.courses nav button[aria-current] { background: var(--soft); color: var(--green); }
+.courses form, .row, .exec-box { border-top: 1px solid var(--line); padding-top: 16px; margin-top: 16px; }
+.course-content header p, .detail header p { margin-top: 7px; }
+.aula details { padding: 14px 0; }
+.aula summary { cursor: pointer; color: var(--green); font-weight: 600; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+.aula .check { display: flex; align-items: center; gap: 8px; }
+.check input { width: auto; }
+.row, .panel, .notice { overflow-wrap: anywhere; }
+.row h3 { margin: 0; }
+.row > button, .row details { margin-top: 8px; }
+.detail { max-width: 900px; margin: auto; }
+.detail header { margin: 20px 0; }
+.problem { white-space: pre-wrap; margin: 16px 0 22px; color: var(--ink); }
+.solution, .aula pre { font: 14px/1.6 "IBM Plex Mono", Consolas, monospace; }
+.solution, .aula pre { background: #17251f; color: #f1f6eb; padding: 16px; }
+.solution:read-only { background: #26332d; }
+.aula pre { border-radius: 8px; white-space: pre-wrap; max-height: 360px; overflow: auto; }
+.actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 10px 0; }
+.notice { background: var(--soft); border-left: 4px solid var(--green); color: var(--ink); padding: 12px 16px; margin-bottom: 16px; }
+.notice.error { border-color: var(--red); }
+#work-state, #tasks > p { margin-top: 12px; }
+@media (max-width: 720px) {
+  .class-layout, .pair { grid-template-columns: 1fr; }
+  .header-actions { flex-wrap: wrap; justify-content: end; gap: 8px; }
+  .topbar { gap: 12px; }
+}

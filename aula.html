@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Mis clases · Logika</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/aula.css">
+  <script src="/terminal-stream.js" defer></script>
+  <script src="/aula.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/aula">logika<span>Aula de programación</span></a>
+    <div class="header-actions"><a id="lab" href="/">Laboratorio libre</a><span id="identity"></span><button class="quiet" id="logout" hidden>Salir de mi cuenta</button></div>
+  </header>
+  <main class="aula">
+    <p class="notice" role="status" id="notice" hidden></p>
+    <p id="launch-help" class="notice" hidden>Si Windows pide confirmación, elige abrir Safe Exam Browser. <a id="retry-launch">Abrir el examen</a> · <a href="/descargas/LogikaSetup.exe" download>Instalar Logika para Windows</a></p>
+    <section class="panel access" id="access" hidden>
+      <h1 id="access-title">Entrar al aula</h1>
+      <form id="account">
+        <label id="name-field" hidden>Nombre y apellido<input name="name" maxlength="90" autocomplete="name"></label>
+        <label>Correo electrónico<input name="email" type="email" maxlength="254" required autocomplete="username"></label>
+        <label>Contraseña<input name="password" type="password" maxlength="256" required autocomplete="current-password"></label>
+        <label id="role-field" hidden>Tipo de cuenta<select name="role"><option value="student">Alumno</option><option value="teacher">Profesor</option></select></label>
+        <label id="invite-field" hidden>Invitación docente<input name="invite" type="password" autocomplete="off"></label>
+        <button class="primary" id="account-action">Entrar</button>
+      </form>
+      <button class="text-button" id="toggle-account">Crear una cuenta</button>
+      <p class="install-link"><a href="/descargas/LogikaSetup.exe" download>Instalar Logika para Windows</a></p>
+    </section>
+    <div class="class-layout" id="dashboard" hidden>
+      <aside class="panel courses">
+        <h2>Mis clases</h2>
+        <nav id="courses" aria-label="Mis clases"></nav>
+        <form id="course-form"><label><span id="course-label"></span><input name="value" required></label><button id="course-action" class="secondary"></button></form>
+      </aside>
+      <section class="panel course-content">
+        <header><h1 id="course-title">Mis tareas</h1><p id="course-info"></p></header>
+        <details id="publisher" hidden><summary>Publicar un ejercicio</summary>
+          <form id="publish">
+            <label>Título<input name="title" required maxlength="140"></label>
+            <label>Enunciado<textarea name="problem" required maxlength="12000" rows="4"></textarea></label>
+            <div class="pair">
+              <label>Lenguaje<select name="language"><option value="71">Python</option><option value="54">C++</option><option value="62">Java</option><option value="63">JavaScript</option></select></label>
+              <label>Fecha y hora de cierre<input type="datetime-local" name="due" required><small id="timezone"></small></label>
+            </div>
+            <label class="check"><input type="checkbox" name="secure"> Exigir Safe Exam Browser para Windows</label>
+            <p id="seb-info"></p>
+            <button class="primary">Publicar tarea</button>
+          </form>
+        </details>
+        <div id="tasks"></div>
+      </section>
+    </div>
+    <section class="panel detail" id="detail" hidden>
+      <button id="back" class="text-button">← Volver a la clase</button>
+      <header><p class="eyebrow" id="task-course"></p><h1 id="task-title"></h1><p id="task-meta"></p></header>
+      <p class="problem" id="problem"></p>
+      <section id="student-work" hidden>
+        <label for="solution">Mi solución</label>
+        <textarea id="solution" class="solution" rows="12" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
+        <p id="work-state" role="status"></p>
+        <div class="actions">
+          <button id="save" class="secondary">Guardar borrador</button><button id="submit-work" class="primary">Entregar solución</button>
+        </div>
+        <section class="exec-box">
+          <div class="actions"><h2>Terminal</h2><button class="secondary" id="run">Ejecutar</button><button class="quiet" id="stop" hidden>Detener</button></div>
+          <pre id="output" aria-live="polite">La salida de tu programa aparecerá aquí.</pre>
+          <form id="input-form" hidden><label>Entrada del programa<input name="line" autocomplete="off"></label><button class="secondary">Enviar</button></form>
+        </section>
+      </section>
+      <section id="review" hidden><h2>Entregas de la clase</h2><div id="roster"></div></section>
+    </section>
+  </main>
+</body>
+</html>

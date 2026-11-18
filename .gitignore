@@ -1,5 +1,7 @@
 # Dependencias instaladas
 node_modules/
+data/
+*.seb
 
 # Credenciales y configuraciones locales
 .env
