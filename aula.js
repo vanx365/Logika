@@ -5,6 +5,7 @@ const formatTime = new Intl.DateTimeFormat("es-PE", { dateStyle: "medium", timeS
 const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 let user, settings, course, task, work, runner;
 let registering = false, busy = false, dirty = false, clockOffset = 0;
+let leavingExam = false;
 const isTeacher = () => user?.role === "teacher";
 const taskPath = () => "/tasks/" + task.id;
 const expired = () => Date.now() + clockOffset >= task.due;
@@ -66,6 +67,10 @@ function accountFields() {
   const teacher = registering && fields.role.value === "teacher";
   $("name-field").hidden = $("role-field").hidden = !registering;
   $("invite-field").hidden = !teacher;
+  $("privacy-field").hidden = !registering;
+  fields.privacyVersion.disabled = !registering;
+  fields.privacyVersion.required = registering;
+  if (!registering) fields.privacyVersion.checked = false;
   fields.name.required = registering;
   fields.invite.required = teacher;
   fields.password.autocomplete = registering ? "new-password" : "current-password";
@@ -92,7 +97,7 @@ $("logout").onclick = action(async () => {
   location.replace("/aula");
 });
 window.addEventListener("beforeunload", event => {
-  if (dirty) { event.preventDefault(); event.returnValue = ""; }
+  if (dirty && !leavingExam) { event.preventDefault(); event.returnValue = ""; }
 });
 window.addEventListener("pageshow", event => { if (event.persisted) location.reload(); });
 
@@ -185,14 +190,30 @@ async function selectCourse(item) {
   if (!list.length) $("tasks").append(element("p", item ? "Todavía no hay ejercicios publicados." :
     isTeacher() ? "Crea tu primera clase para publicar un ejercicio." : "Introduce el código que te compartió tu profesor."));
 }
+const dueInput = $("publish").elements.due;
+function showDeadline() {
+  $("timezone").textContent = Number.isFinite(dueInput.valueAsNumber)
+    ? "Cierra el " + closing(new Date(dueInput.value))
+    : "Hora de " + zone;
+}
+dueInput.addEventListener("input", showDeadline);
+$("end-today").onclick = () => {
+  const today = new Date();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  dueInput.value = today.getFullYear() + "-" + month + "-" + day + "T23:59";
+  showDeadline();
+};
 $("publish").onsubmit = action(async () => {
   const form = $("publish");
   const fields = form.elements;
+  const due = new Date(fields.due.value).getTime();
   await api("/courses/" + course.id + "/tasks", {
-    title: fields.title.value, problem: fields.problem.value, due: new Date(fields.due.value).getTime(),
+    title: fields.title.value, problem: fields.problem.value, due,
     language: Number(fields.language.value), secure: fields.secure.checked
   });
   form.reset();
+  showDeadline();
   fields.secure.checked = settings.sebReady;
   $("publisher").open = false;
   await selectCourse(course);
@@ -237,6 +258,11 @@ function syncWork() {
   const status = work.submitted ? "Entregada el " + closing(work.submitted) : expired() ? "Plazo cerrado · Sin entrega" :
     dirty ? "Cambios sin guardar" : work.version ? "Borrador guardado en el aula" : "Sin entregar";
   $("work-state").textContent = [status, resultText(work)].filter(Boolean).join(" · ");
+  if (locked && task.secure && settings?.inSeb && !leavingExam) {
+    leavingExam = true;
+    runner?.controller.abort();
+    window.location.assign("/api/aula/exam/finished");
+  }
 }
 $("solution").oninput = () => { dirty = $("solution").value !== work.code; syncWork(); };
 setInterval(syncWork, 1000);

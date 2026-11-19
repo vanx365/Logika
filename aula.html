@@ -26,6 +26,15 @@
         <label>Contraseña<input name="password" type="password" maxlength="256" required autocomplete="current-password"></label>
         <label id="role-field" hidden>Tipo de cuenta<select name="role"><option value="student">Alumno</option><option value="teacher">Profesor</option></select></label>
         <label id="invite-field" hidden>Invitación docente<input name="invite" type="password" autocomplete="off"></label>
+        <div id="privacy-field" hidden>
+          <details>
+            <summary>Aviso de privacidad del aula</summary>
+            <p>Logika guarda tu nombre, correo y rol para identificarte como alumno o profesor. Protege tu contraseña mediante una función de derivación y usa cookies para mantener tu sesión y, cuando corresponde, darte acceso al examen.</p>
+            <p>El aula guarda tus clases y tareas. Si eres alumno, también guarda tus borradores, el código que entregas, la fecha de entrega, tus notas y los comentarios del profesor. El profesor de cada clase puede ver tu nombre, correo, estado de entrega y solución entregada para revisar y calificar tu trabajo.</p>
+            <p>Estos datos se guardan en el servidor del aula. Al crear tu cuenta se registran la fecha y la versión del aviso que aceptaste. Para consultar tus datos o solicitar su corrección o eliminación, contacta a quien administra el aula en tu institución.</p>
+          </details>
+          <label class="check"><input type="checkbox" name="privacyVersion" value="2026-11-18" disabled> He leído y acepto el aviso de privacidad del aula.</label>
+        </div>
         <button class="primary" id="account-action">Entrar</button>
       </form>
       <button class="text-button" id="toggle-account">Crear una cuenta</button>
@@ -45,7 +54,10 @@
             <label>Enunciado<textarea name="problem" required maxlength="12000" rows="4"></textarea></label>
             <div class="pair">
               <label>Lenguaje<select name="language"><option value="71">Python</option><option value="54">C++</option><option value="62">Java</option><option value="63">JavaScript</option></select></label>
-              <label>Fecha y hora de cierre<input type="datetime-local" name="due" required><small id="timezone"></small></label>
+              <div>
+                <label>Fecha y hora de cierre<input type="datetime-local" name="due" required aria-describedby="timezone"><small id="timezone"></small></label>
+                <button type="button" id="end-today" class="text-button">Hoy a las 11:59 p. m.</button>
+              </div>
             </div>
             <label class="check"><input type="checkbox" name="secure"> Exigir Safe Exam Browser para Windows</label>
             <p id="seb-info"></p>

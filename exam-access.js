@@ -45,6 +45,9 @@ export function registerExamAccess(api, db, seb, dir, cookie) {
     });
   });
 
+  // SEB intercepts this navigation. Older profiles stay on the result screen.
+  api.get("/exam/finished", (_req, res) => res.status(204).end());
+
   api.post("/exam/redeem", (req, res) => {
     if (!seb.accepts(req)) return res.status(403).json({ error: "El perfil de SEB no está autorizado." });
     const ticket = req.body?.ticket;

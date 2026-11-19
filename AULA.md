@@ -56,3 +56,4 @@ npm.cmd test
 ```
 
 Las pruebas de integración crean datos y claves temporales y comprueban permisos, vencimiento, protección de exámenes, aislamiento de entregas y devolución de notas. La prueba del bloqueo del escritorio se realiza con el cliente instalado en Windows.
+El perfil de examen usa la URL de salida `/api/aula/exam/finished` del mismo origen de Logika. En la pestaña **Exam** de SEB configura la URL completa en **Link to quit SEB after exam** y desmarca **Ask user to confirm quitting**. Al actualizar un perfil existente, guarda el archivo y registra su nueva Browser Exam Key. Logika activa la salida cuando el servidor confirma la entrega o se alcanza la hora de cierre. Los borradores pendientes al vencer el plazo conservan su estado sin entregar.

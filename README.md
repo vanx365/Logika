@@ -1,181 +1,77 @@
 # Logika
 
-**Un tutor de programación que pregunta en lugar de responder.**
+Logika es un laboratorio de programación en español para estudiantes que están aprendiendo a convertir una idea en código. El estudiante explica cómo resolvería un problema, conversa con un tutor de IA y, cuando el tutor aprueba su plan, pasa al editor. Después de ejecutar el programa, puede comparar lo que esperaba con lo que ocurrió usando su propio código, las entradas y la salida de la terminal.
 
-Logika es una aplicación web que ayuda a estudiantes de programación a razonar sus propias soluciones. En vez de entregar el código resuelto, usa el método socrático: hace preguntas guiadas, y el estudiante escribe, ejecuta y corrige su propio código.
+El proyecto también incluye un aula donde los profesores publican ejercicios y califican entregas. Es un prototipo de estudiantes de Ingeniería de Software de la Universidad La Salle, Arequipa, presentado en la Feria de Emprendimiento 2026 y en la Feria Concurso de Proyectos Digitales 2026.
 
-> **Estado:** prototipo funcional (PMV) · Proyecto presentado en la Feria de Emprendimiento 2026 — Universidad La Salle, Arequipa.
+## Probar el laboratorio
 
----
+1. Abre el laboratorio y pulsa **Usar un ejemplo** o escribe tu propio enunciado. Elige **C++, Python, Java o JavaScript**.
+2. Explica tu estrategia en el chat. El tutor hace preguntas sobre el plan y, al aprobarlo, habilita el editor. Puedes volver a consultar la estrategia mientras programas.
+3. Escribe tu solución y pulsa **Ejecutar**. Si el programa pide datos, introdúcelos en la terminal. Al terminar, el tutor recibe el código, las entradas y los resultados para ayudarte a revisar el intento.
+4. Pulsa **Nuevo ejercicio** para empezar con un borrador y una conversación nuevos.
 
-## El problema
+## Usar el aula
 
-Los asistentes de IA generales resuelven un ejercicio en segundos. Para un estudiante de primeros ciclos esto es una trampa: entrega la tarea, pero **no desarrolla el razonamiento** que necesita para programar. Esta dependencia se conoce como *descarga cognitiva* (*cognitive offloading*), y es una preocupación creciente en la enseñanza de CS1.
+| Quién | Qué puede hacer |
+| --- | --- |
+| **Profesor** | Registrarse con una invitación docente, crear una clase y compartir su código. Puede publicar tareas con lenguaje y hora de cierre, revisar el código entregado, calificar de 0 a 20 y dejar comentarios. |
+| **Alumno** | Unirse con el código de clase, guardar borradores, probar el programa con la terminal y entregar su solución. Puede consultar la nota y los comentarios desde la misma clase. |
 
-## La solución
+El servidor controla el plazo. Al cerrar una tarea, un borrador guardado sigue disponible para consulta y figura como **sin entregar**. Para probar ambos roles en una computadora, abre la sesión del profesor en una ventana normal y la del alumno en una privada. [Guía del aula](AULA.md)
 
-Logika actúa como un tutor y no como un generador de respuestas:
+### Exámenes en Windows
 
-1. El estudiante recibe un problema y lo escribe en un editor de código.
-2. Ejecuta su código en un entorno seguro y ve el resultado real.
-3. Logika analiza su intento y responde con **preguntas** que lo llevan a descubrir el error o el siguiente paso.
-4. El estudiante avanza con su propio razonamiento.
+El profesor puede activar **Exigir Safe Exam Browser para Windows** en una tarea. El alumno instala Logika una vez, entra en su clase y pulsa **Empezar examen**. El navegador puede pedir permiso para abrir Safe Exam Browser (SEB). Logika usa un pase de un solo uso para abrir la tarea con la sesión del alumno.
 
-## Fundamento pedagógico
+El administrador prepara el perfil de SEB y registra su *Browser Exam Key* en el servidor. Con el enlace de salida configurado, Logika solicita el cierre de SEB cuando se confirma la entrega o vence el plazo. Para usar el aula desde otras computadoras, el centro debe proporcionar su dirección HTTPS. El instalador de Windows configura el acceso a esa dirección y obtiene el cliente oficial de SEB cuando hace falta. [Configuración de exámenes](AULA.md#preparar-un-examen-para-windows) · [Instalador para Windows](installer/README.md)
 
-El diseño se apoya en tres ideas:
+## Ejecutar Logika en tu equipo
 
-- **Especificación de intención** (*intent specification*): que el estudiante explique qué quiere que haga su código antes de escribirlo.
-- **Descarga cognitiva en CS1**: reducir el atajo de pedirle la solución a la IA.
-- **Pedagogía de programación resistente a la IA**: diseñar la interacción para que la IA acompañe el aprendizaje sin sustituirlo.
+Necesitas **Git, Node.js 22.13 o posterior y npm**. La terminal requiere **Docker con contenedores Linux** en el equipo que ejecuta el servidor. El tutor requiere una clave de la API de Anthropic. El aula permite crear clases, publicar tareas y calificar con la clave de IA vacía.
 
-Inspirado en proyectos como **Maieutic**, adaptado al contexto de estudiantes de primeros ciclos y a la ejecución real de código.
-
-## Características
-
-- Editor de código integrado (Monaco Editor)
-- Ejecución de código en sandbox (Judge0 CE)
-- Tutor socrático impulsado por la API de Claude
-- Aula con clases por código, ejercicios con vencimiento, borradores, entregas y calificación.
-- Evaluaciones para Windows con Safe Exam Browser. El profesor puede exigirlo por tarea y el administrador puede exigirlo para toda la aplicación.
-- <!-- [COMPLETAR] Lenguajes soportados -->
-- <!-- [COMPLETAR] Banco de ejercicios / niveles -->
-- <!-- [COMPLETAR] Registro de progreso, si existe -->
-
-## Arquitectura
-
-```
-┌────────────────────┐        ┌─────────────────────┐        ┌──────────────┐
-│  Frontend          │  HTTP  │  Backend            │        │  Claude API  │
-│  HTML / CSS / JS   │ ─────▶ │  Node.js + Express  │ ─────▶ │  (tutor      │
-│  Monaco Editor     │ ◀───── │                     │ ◀───── │   socrático) │
-└────────────────────┘        │                     │        └──────────────┘
-                              │                     │        ┌──────────────┐
-                              │                     │ ─────▶ │  Judge0 CE   │
-                              │                     │ ◀───── │  (ejecución) │
-                              └─────────────────────┘        └──────────────┘
-```
-
-## Tecnologías
-
-| Capa | Tecnología |
-|---|---|
-| Frontend | HTML, CSS, JavaScript, Monaco Editor |
-| Backend | Node.js, Express |
-| IA | Claude API (ingeniería de prompts) |
-| Ejecución de código | Judge0 CE |
-
-> La lógica del tutor se resuelve con ingeniería de prompts; no requiere fine-tuning.
-
-## Instalación
-
-Requisitos del equipo que ejecutará Logika:
-
-- Node.js 22.13 o posterior con npm y el módulo integrado node:sqlite.
-- Git.
-- Docker Desktop con contenedores Linux en Windows o macOS, o Docker Engine en Linux. En Windows, WSL 2 y virtualización deben estar habilitados.
-- Una clave propia de la API de Anthropic con acceso al modelo configurado y saldo o facturación disponibles.
-- Conexión a Internet para descargar dependencias, construir la imagen y consultar al tutor.
-
-Clona el repositorio y selecciona la rama Modificaciones. Desde su carpeta, en PowerShell:
+Desde PowerShell, para una instalación nueva:
 
 ```powershell
-git switch Modificaciones
+git clone https://github.com/vanx365/Logika.git
+cd Logika
 npm.cmd ci
 Copy-Item .env.example .env
 ```
 
-Edita el archivo .env y completa ANTHROPIC_API_KEY. Mantén ese archivo local.
-Con Docker abierto y su motor funcionando:
+Para usar el tutor, completa `ANTHROPIC_API_KEY` en `.env`. Inicia Docker y ejecuta:
 
 ```powershell
 npm.cmd run runner:build
 npm.cmd start
 ```
 
-Abre http://localhost:3000. En macOS o Linux usa npm en lugar de npm.cmd y
-cp .env.example .env para crear la configuración.
+La imagen se construye en la primera instalación y cuando cambia `Dockerfile.runner`. En los siguientes arranques, inicia Docker y ejecuta `npm.cmd start`. En macOS o Linux usa `npm` y copia la configuración con `cp .env.example .env`.
 
-La construcción de la imagen se realiza una vez y se repite cuando cambia
-Dockerfile.runner. En los siguientes arranques basta con iniciar Docker y
-ejecutar npm.cmd start.
+Con el puerto predeterminado puedes abrir el [laboratorio](http://localhost:3000/) y el [aula](http://localhost:3000/aula). Para crear la primera cuenta de profesor, consulta `data/invitacion-docente.txt`, generado en el primer arranque. Puedes fijar tu propia invitación con `LOGIKA_TEACHER_INVITE`. El alumno recibe el código de clase que genera el profesor.
 
-### Variables de entorno
+## Tecnología y datos
 
-| Variable | Descripción |
-|---|---|
-| ANTHROPIC_API_KEY | Clave propia del servicio de tutoría de Claude. La suscripción a su aplicación de chat y la API tienen facturación independiente. |
-| PORT | Puerto del servidor, 3000 por defecto. |
-| RAPIDAPI_KEY | Opcional, solo para el endpoint antiguo de Judge0. La terminal Docker no la usa. |
+- **Interfaz y servidor.** HTML, CSS y JavaScript, Monaco Editor en el laboratorio y una API de Node.js con Express.
+- **Tutor.** El servidor envía el contexto del ejercicio a la API de Claude. El laboratorio conserva el borrador y la conversación del ejercicio en el navegador.
+- **Terminal.** Cada ejecución usa un contenedor Docker sin acceso a la red, con un límite de 90 segundos y 512 MB de memoria. Docker se instala en el servidor. La interfaz usa esta terminal. La variable `RAPIDAPI_KEY` solo corresponde a la ruta de compatibilidad con Judge0.
+- **Aula.** SQLite guarda cuentas, clases, borradores, entregas y calificaciones en `data/aula.sqlite`. El registro del aula incluye un aviso de privacidad y guarda la fecha y versión aceptada. La configuración privada y los datos locales se excluyen de Git. [Variables de configuración](.env.example) · [Aviso de privacidad del proyecto](https://github.com/vanx365/Logika/blob/main/Aviso%20de%20Privacidad)
 
-### Aula y evaluaciones en Windows
+Para revisar la sintaxis y ejecutar las pruebas automatizadas:
 
-Abre **Mis clases** desde el laboratorio o entra en `/aula`. El aula permite publicar, resolver y calificar ejercicios sin configurar una clave de IA. La terminal utiliza la imagen Docker de Logika. La guía incluye el primer acceso del profesor, las variables del aula y la preparación del archivo de examen para Windows. [Guía del aula y Safe Exam Browser](AULA.md)
-
-Para tus clientes puedes compilar **LogikaSetup.exe** con el dominio de su institución. Una vez instalado, el alumno abre Logika, inicia sesión y pulsa **Empezar examen**. [Instalador y compilación por centro](installer/README.md)
-
-### Archivos del proyecto
-
-- index.html, style.css y app.js contienen la interfaz.
-- server.js conecta la interfaz con el tutor y registra las rutas.
-- runner.js administra las terminales y los contenedores.
-- Dockerfile.runner y .dockerignore definen la imagen de ejecución.
-- package.json y package-lock.json definen comandos y dependencias.
-- .env.example contiene nombres de variables sin credenciales.
-
-## Hoja de ruta
-
-- [x] Prototipo funcional con editor, ejecución y tutor socrático
-- [ ] Validación con estudiantes reales
-- [ ] <!-- [COMPLETAR] Siguiente funcionalidad -->
-- [x] Panel docente con seguimiento de entregas y devolución de calificaciones
-
-## Equipo
-
-| Nombre | Rol |
-|---|---|
-| Edwin Sebastian Coaguila Suarez| <!-- [COMPLETAR] --> |
-
-Estudiantes de Ingeniería de Software, Universidad de La Salle, Arequipa.
-
-## Licencia
-
-<!-- [COMPLETAR] Por ejemplo MIT, o "Todos los derechos reservados" -->
-## Terminal interactiva con Docker
-
-La interfaz ejecuta C++, Python, Java y JavaScript en contenedores Linux.
-En el equipo que ejecuta el servidor instala Docker Desktop con WSL 2 (Windows)
-o Docker Engine (Linux). Los alumnos acceden desde el navegador.
-
-Con Docker en funcionamiento, prepara el entorno una vez:
-
-```bash
-npm ci
-npm run runner:build
-npm start
+```sh
+npm run check
+npm test
 ```
 
-El botón Ejecutar abre una sesión de terminal. La salida aparece en vivo.
-Si el programa lee datos con input(), cin, Scanner o stdin, escribe la respuesta
-y pulsa Enter en la terminal. Los mensajes para solicitar datos deben estar
-incluidos en el programa del estudiante. La terminal permite enviar líneas
-mientras el proceso está activo; no intenta adivinar si el programa está leyendo.
+Las pruebas cubren permisos por rol, plazos, calificaciones, acceso a exámenes y separación del historial entre ejercicios. El bloqueo y la salida de SEB se comprueban con el cliente instalado en Windows.
 
-Cada ejecución tiene un máximo de 90 segundos, 512 MB de memoria, una CPU,
-64 procesos y 128 KiB de salida. El contenedor usa un usuario sin privilegios,
-sin red y con el código montado como solo lectura. Detener el programa o
-cerrar su conexión elimina el contenedor.
+## Equipo y experiencia inicial
 
-Después de terminar, Logika envía automáticamente al tutor una copia del
-código ejecutado, las entradas y los resultados. Para limitar el contexto,
-se envían hasta 8000 caracteres de entrada y 12000 de cada salida.
-Una falla del tutor permite reintentar la revisión sin ejecutar otra vez.
+| Integrante | Aporte |
+| --- | --- |
+| Edwin Sebastian de Jesus Coaguila Suarez | Idea, coordinación del equipo y frontend |
+| Cesar Gustavo Hilguiera Apaza | Backend |
+| Jasser Carbajal Sequeiros | Pitch y presentación del proyecto |
 
-ANTHROPIC_API_KEY sigue siendo necesaria para el tutor. La terminal Docker
-no utiliza RAPIDAPI_KEY. El endpoint /api/run de Judge0 se conserva para
-compatibilidad, pero la interfaz usa /api/terminal.
-
-Si falta Docker, inicia Docker Desktop y construye la imagen con
-npm run runner:build. Reinicia el servidor tras modificar su configuración.
-Este servidor conserva sesiones en memoria; una instalación con varios
-servidores necesita dirigir las solicitudes de una terminal al mismo proceso.
+El equipo reporta que **52 estudiantes** probaron Logika de manera informal durante el desarrollo. Sus comentarios iniciales se refirieron a la idea y a la sencillez de la interfaz. Durante el desarrollo, el equipo también utilizó Claude para aprender a integrar bibliotecas y generar parte del código.

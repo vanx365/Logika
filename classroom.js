@@ -11,6 +11,7 @@ import { registerExamAccess } from "./exam-access.js";
 const derive = promisify(scrypt);
 const digest = value => createHash("sha256").update(value).digest();
 const lifetime = 12 * 60 * 60 * 1000;
+const privacyVersion = "2026-11-18";
 const languages = new Set([54, 71, 62, 63]);
 
 function fail(status, message) {
@@ -47,6 +48,8 @@ export function classroom(dir, seb) {
       role TEXT NOT NULL, salt TEXT NOT NULL, password TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS sessions (
       token TEXT PRIMARY KEY, user INTEGER NOT NULL REFERENCES users, expires INTEGER NOT NULL);
+    CREATE TABLE IF NOT EXISTS privacy_acceptances (
+      user INTEGER PRIMARY KEY REFERENCES users ON DELETE CASCADE, version TEXT NOT NULL, accepted_at INTEGER NOT NULL);
     CREATE TABLE IF NOT EXISTS courses (
       id INTEGER PRIMARY KEY, name TEXT NOT NULL, owner INTEGER NOT NULL REFERENCES users,
       code TEXT UNIQUE NOT NULL);
@@ -98,6 +101,8 @@ export function classroom(dir, seb) {
           fail(400, "Revisa tu correo y contraseña.");
         let user = sql("SELECT * FROM users WHERE email=?").get(email);
         if (action === "register") {
+          if (req.body.privacyVersion !== privacyVersion)
+            fail(400, "Revisa el aviso de privacidad vigente y marca la casilla para crear tu cuenta.");
           const name = field(req.body.name, 90, "nombre");
           if (password.length < 10) fail(400, "Usa al menos 10 caracteres para la contraseña.");
           if (!["teacher", "student"].includes(role)) fail(400, "Selecciona un rol.");
@@ -105,10 +110,18 @@ export function classroom(dir, seb) {
             fail(403, "La invitación docente es incorrecta.");
           const salt = randomBytes(16).toString("hex");
           const hash = (await derive(password, salt, 64)).toString("hex");
-          const result = sql("INSERT INTO users(name,email,role,salt,password) VALUES(?,?,?,?,?) ON CONFLICT(email) DO NOTHING")
-            .run(name, email, role, salt, hash);
-          if (!result.changes) fail(409, "Ese correo ya tiene cuenta.");
-          user = { id: result.lastInsertRowid, name, role };
+          db.exec("BEGIN IMMEDIATE");
+          try {
+            const result = sql("INSERT INTO users(name,email,role,salt,password) VALUES(?,?,?,?,?) ON CONFLICT(email) DO NOTHING")
+              .run(name, email, role, salt, hash);
+            if (!result.changes) fail(409, "Ese correo ya tiene cuenta.");
+            user = { id: result.lastInsertRowid, name, role };
+            sql("INSERT INTO privacy_acceptances(user,version,accepted_at) VALUES(?,?,?)").run(user.id, privacyVersion, Date.now());
+            db.exec("COMMIT");
+          } catch (error) {
+            db.exec("ROLLBACK");
+            throw error;
+          }
         } else {
           const hash = await derive(password, user?.salt || "logika-missing-user", 64);
           if (!user || !timingSafeEqual(hash, Buffer.from(user.password, "hex"))) fail(401, "Correo o contraseña incorrectos.");
@@ -172,8 +185,11 @@ export function classroom(dir, seb) {
     const title = field(req.body.title, 140, "título");
     const problem = field(req.body.problem, 12000, "enunciado");
     const { language, due, secure } = req.body;
-    if (!languages.has(language) || !Number.isSafeInteger(due) || due <= Date.now() || due > 8640000000000000 || typeof secure !== "boolean")
-      fail(400, "Selecciona un lenguaje, una modalidad y una fecha de cierre futura.");
+    if (!languages.has(language) || typeof secure !== "boolean")
+      fail(400, "Selecciona un lenguaje y una modalidad válidos.");
+    if (!Number.isSafeInteger(due) || Math.abs(due) > 8640000000000000)
+      fail(400, "Revisa la fecha y la hora de cierre.");
+    if (due <= Date.now()) fail(400, "La hora de cierre ya pasó. Revisa el día y si elegiste a. m. o p. m.");
     if ((secure || seb.wholeApp) && !seb.ready) fail(503, "Configura el perfil de Safe Exam Browser antes de publicar este examen.");
     const result = sql("INSERT INTO tasks(course,title,problem,language,due,secure) VALUES(?,?,?,?,?,?)")
       .run(course.id, title, problem, language, due, Number(secure || seb.wholeApp));

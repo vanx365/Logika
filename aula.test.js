@@ -44,7 +44,7 @@ async function fixture(t, wholeApp = false) {
     return data;
   }
   async function register(name, role) {
-    const body = { name, role, email: name + "@example.org", password: "long-password", invite };
+    const body = { name, role, email: name + "@example.org", password: "long-password", invite, privacyVersion: "2026-11-18" };
     const response = await request("/api/aula/register", { body });
     assert.equal(response.status, 200);
     const cookie = response.headers.get("set-cookie");
@@ -56,12 +56,20 @@ async function fixture(t, wholeApp = false) {
 
 test("Clases, permisos, entregas, calificación y cierre según el reloj del servidor", async t => {
   const { api, register, dir } = await fixture(t);
-  await api("/register", null, { role: "teacher", name: "Test", email: "x@example.org", password: "long-password" }, 403);
+  const applicant = { role: "student", name: "Alba", email: "alba@example.org", password: "long-password" };
+  await api("/register", null, applicant, 400);
+  await api("/register", null, { ...applicant, privacyVersion: "anterior" }, 400);
+  await api("/register", null, { ...applicant, role: "teacher", privacyVersion: "2026-11-18" }, 403);
   const teacher = await register("Docente", "teacher");
   const student = await register("Alba", "student");
   const other = await register("Emilio", "student");
   const otherTeacher = await register("Docente2", "teacher");
   const me = (await api("/me", student)).user;
+  const audit = new DatabaseSync(path.join(dir, "aula.sqlite"), { readOnly: true });
+  const acceptance = audit.prepare("SELECT version,accepted_at FROM privacy_acceptances WHERE user=?").get(me.id);
+  audit.close();
+  assert.equal(acceptance.version, "2026-11-18");
+  assert.ok(acceptance.accepted_at > 0 && acceptance.accepted_at <= Date.now());
   const course = await api("/courses", teacher, { name: "Algoritmos" }, 201);
   await api("/courses", student, { name: "Test" }, 403);
   const list = "/courses/" + course.id + "/tasks";
