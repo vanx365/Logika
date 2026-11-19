@@ -28,6 +28,8 @@ const profile = `<?xml version="1.0" encoding="UTF-8"?>
   <key>sebServiceIgnore</key><false/>
   <key>sebServicePolicy</key><integer>2</integer>
   <key>allowQuit</key><true/>
+  <key>quitURL</key><string>${escapeXml(origin)}/api/aula/exam/finished</string>
+  <key>quitURLConfirm</key><false/>
   <key>hashedQuitPassword</key><string>${hash(quit)}</string>
   <key>hashedAdminPassword</key><string>${hash(admin)}</string>
   <key>allowDownUploads</key><false/>

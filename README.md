@@ -1,18 +1,21 @@
 # Logika
 
-**Un tutor de programación que pregunta en lugar de responder.**
+Logika es un laboratorio de programación en español para estudiantes que están aprendiendo a convertir una idea en código. El estudiante explica cómo resolvería un problema, conversa con un tutor de IA y, cuando el tutor aprueba su plan, pasa al editor. Después de ejecutar el programa, puede comparar lo que esperaba con lo que ocurrió usando su propio código, las entradas y la salida de la terminal.
 
 Logika es una aplicación web para que los estudiantes de programación razonen sus propias soluciones. El estudiante plantea primero su plan, un tutor con IA lo cuestiona con preguntas y solo después se abre el editor. Además incluye un **aula** donde el docente asigna ejercicios, recibe entregas y califica.
 
 > **Estado:** prototipo funcional (MVP) · Proyecto presentado en la Feria de Emprendimiento 2026 y en la Feria Concurso de Proyectos Digitales 2026 de la Universidad La Salle, Arequipa.
 
----
+1. Abre el laboratorio y pulsa **Usar un ejemplo** o escribe tu propio enunciado. Elige **C++, Python, Java o JavaScript**.
+2. Explica tu estrategia en el chat. El tutor hace preguntas sobre el plan y, al aprobarlo, habilita el editor. Puedes volver a consultar la estrategia mientras programas.
+3. Escribe tu solución y pulsa **Ejecutar**. Si el programa pide datos, introdúcelos en la terminal. Al terminar, el tutor recibe el código, las entradas y los resultados para ayudarte a revisar el intento.
+4. Pulsa **Nuevo ejercicio** para empezar con un borrador y una conversación nuevos.
 
-## El problema
+## Usar el aula
 
 Los asistentes de IA generales resuelven un ejercicio en segundos. Para un estudiante de primeros ciclos esto es una trampa: entrega la tarea, pero **no desarrolla el razonamiento** que necesita para programar. Esta dependencia se conoce como *descarga cognitiva* (*cognitive offloading*) y preocupa a quienes enseñan programación en los primeros cursos. Además, el docente no puede ver cómo pensó cada alumno.
 
-## La solución
+El servidor controla el plazo. Al cerrar una tarea, un borrador guardado sigue disponible para consulta y figura como **sin entregar**. Para probar ambos roles en una computadora, abre la sesión del profesor en una ventana normal y la del alumno en una privada. [Guía del aula](AULA.md)
 
 Logika invierte el orden habitual: **primero piensas, después programas.**
 
@@ -20,7 +23,7 @@ Logika invierte el orden habitual: **primero piensas, después programas.**
 2. **Dialoga:** el tutor responde con una pregunta a la vez y no da la solución. El editor se abre cuando el plan es sólido.
 3. **Programa y entrega:** el estudiante escribe y ejecuta su código en una terminal real. El tutor revisa el resultado con preguntas, y en el aula el docente recibe la entrega y la califica.
 
-## Fundamento pedagógico
+El administrador prepara el perfil de SEB y registra su *Browser Exam Key* en el servidor. Con el enlace de salida configurado, Logika solicita el cierre de SEB cuando se confirma la entrega o vence el plazo. Para usar el aula desde otras computadoras, el centro debe proporcionar su dirección HTTPS. El instalador de Windows configura el acceso a esa dirección y obtiene el cliente oficial de SEB cuando hace falta. [Configuración de exámenes](AULA.md#preparar-un-examen-para-windows) · [Instalador para Windows](installer/README.md)
 
 - **Especificación de intención** (*intent specification*): explicar qué debe hacer el programa antes de escribirlo.
 - **Descarga cognitiva en CS1**: reducir el atajo de pedirle la solución a la IA.
@@ -76,7 +79,8 @@ Requisitos del equipo que ejecutará Logika:
 Desde PowerShell, en la carpeta del proyecto:
 
 ```powershell
-git switch Modificaciones
+git clone https://github.com/vanx365/Logika.git
+cd Logika
 npm.cmd ci
 Copy-Item .env.example .env
 ```
@@ -90,7 +94,7 @@ npm.cmd start
 
 Abre <http://localhost:3000>. En macOS o Linux usa `npm` en lugar de `npm.cmd` y `cp .env.example .env`. La imagen se construye una vez y se repite solo si cambia `Dockerfile.runner`.
 
-### Variables de entorno
+## Tecnología y datos
 
 | Variable | Descripción |
 |---|---|
