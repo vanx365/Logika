@@ -1,0 +1,64 @@
+# Aviso de privacidad de Logika
+
+*Versión 1.0 · 18 de noviembre de 2026*
+
+Logika respeta tu privacidad y trata tus datos personales conforme a la **Ley N.° 29733, Ley de Protección de Datos Personales**. Este aviso explica qué datos recogemos, para qué los usamos y qué derechos tienes.
+
+## 1. Quiénes somos
+
+Logika es un proyecto de estudiantes de Ingeniería de Software de la Universidad La Salle (Arequipa): Edwin Sebastian de Jesus Coaguila Suarez, Jasser Carbajal Sequeiros y Cesar Gustavo Hilguiera Apaza.
+
+**Contacto para temas de privacidad:** [COMPLETAR: correo del equipo]
+
+## 2. Qué datos tratamos
+
+**Cuenta del aula**
+- Nombre y apellido, correo electrónico y tipo de cuenta (alumno o profesor).
+- Tu contraseña no se guarda en texto: solo se conserva un resumen cifrado con sal (*hash*).
+- Una cookie de sesión necesaria para mantenerte conectado.
+
+**Actividad en el aula**
+- Clases a las que perteneces, borradores y entregas de código, versiones, fecha de entrega, calificación y comentarios del profesor.
+
+**Tutor con IA**
+- Los mensajes que escribes al tutor, el enunciado, tu plan, el código que ejecutas, las entradas que ingresas y los resultados de la ejecución.
+
+**En tu navegador**
+- Borradores y el historial del ejercicio se guardan en el almacenamiento local de tu navegador.
+
+## 3. Para qué los usamos
+
+- Crear y mantener tu cuenta y tus clases.
+- Que el profesor reciba tus entregas, las califique y te devuelva comentarios.
+- Generar las preguntas del tutor.
+- Evaluar y mejorar Logika, y presentar resultados **agrupados y sin nombres** en ferias y concursos académicos.
+
+No usamos tus datos para publicidad ni los vendemos.
+
+## 4. Con quién se comparten
+
+- **Tu profesor** ve tu nombre, tus entregas, tu calificación y los comentarios de las clases en las que participas.
+- **Anthropic** procesa el contenido de la conversación con el tutor para generar sus respuestas, bajo las políticas de ese servicio.
+- Los datos del aula se guardan en una base de datos del equipo o servidor donde se ejecuta Logika, con acceso limitado a su administrador.
+
+## 5. Cuánto tiempo los conservamos
+
+[COMPLETAR: plazo, por ejemplo "hasta el cierre del concurso y de la clase correspondiente"]. Puedes pedir antes la eliminación de tus datos.
+
+## 6. Tus derechos
+
+Puedes **acceder** a tus datos, **rectificarlos**, **cancelarlos** u **oponerte** a su tratamiento escribiendo al correo de contacto. Si consideras que no atendimos tu solicitud, puedes acudir a la Autoridad Nacional de Protección de Datos Personales.
+
+## 7. Seguridad
+
+- Las contraseñas se guardan con cifrado y sal.
+- La cookie de sesión no es accesible desde scripts de la página y solo se envía al propio sitio.
+- Las ejecuciones de código corren en contenedores aislados, sin red.
+
+## 8. Tu consentimiento
+
+Al crear una cuenta, marcas una casilla para confirmar que leíste este aviso y autorizas el tratamiento de tus datos para estas finalidades. Si no estás de acuerdo, no crees una cuenta. Puedes retirar tu consentimiento en cualquier momento escribiendo al correo de contacto.
+
+## 9. Cambios
+
+Si actualizamos este aviso, publicaremos la nueva versión con su fecha.
