@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node server.js",
-    "check": "node --check server.js && node --check runner.js && node --check app.js && node --check terminal-stream.js && node --check aula.js && node --check classroom.js && node --check seb.js && node --check exam-access.js && node --check preparar-seb.js",
+    "check": "node --check server.js && node --check runner.js && node --check app.js && node --check terminal-stream.js && node --check aula.js && node --check classroom.js && node --check task-activity.js && node --check tutor.js && node --check seb.js && node --check exam-access.js && node --check preparar-seb.js",
     "test": "node --test",
     "seb:preparar": "node preparar-seb.js",
     "runner:build": "docker build -f Dockerfile.runner -t logika-runner:local ."

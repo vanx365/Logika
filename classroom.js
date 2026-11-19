@@ -7,12 +7,14 @@ import { promisify } from "node:util";
 import { examMessage } from "./seb.js";
 import { registerRunner } from "./runner.js";
 import { registerExamAccess } from "./exam-access.js";
+import { respondWithTutor } from "./tutor.js";
+import { taskActivity } from "./task-activity.js";
 
 const derive = promisify(scrypt);
 const digest = value => createHash("sha256").update(value).digest();
 const lifetime = 12 * 60 * 60 * 1000;
-const privacyVersion = "2026-11-18";
-const languages = new Set([54, 71, 62, 63]);
+const privacyVersion = "2026-11-19";
+const languages = new Map([[54, "C++"], [71, "Python"], [62, "Java"], [63, "JavaScript"]]);
 
 function fail(status, message) {
   throw Object.assign(new Error(message), { status });
@@ -63,6 +65,7 @@ export function classroom(dir, seb) {
       version INTEGER NOT NULL, submitted INTEGER, grade INTEGER, feedback TEXT, PRIMARY KEY(task, student));
   `);
   const sql = query => db.prepare(query);
+  const activity = taskActivity(db);
   const api = express.Router();
   const cookie = { httpOnly: true, sameSite: "strict", secure: seb.secureCookie, path: "/" };
   api.use((req, res, next) => {
@@ -205,7 +208,33 @@ export function classroom(dir, seb) {
     next();
   });
   const myWork = req => sql("SELECT code,version,submitted,grade,feedback FROM work WHERE task=? AND student=?").get(req.task.id, req.user.id);
-  api.get("/tasks/:task", (req, res) => res.json({ task: req.task, work: myWork(req) || null, now: Date.now() }));
+  const tutorAllowed = req => !req.task.secure && !seb.wholeApp && !req.exam && !seb.accepts(req);
+  api.get("/tasks/:task", (req, res) => res.json({
+    task: req.task, work: myWork(req) || null, now: Date.now(),
+    tutor: req.user.role === "student" && tutorAllowed(req) ? activity.tutorHistory(req.task.id, req.user.id) : null,
+  }));
+
+  api.post("/tasks/:task/tutor", (req, res, next) => {
+    requireRole(req, "student");
+    if (!tutorAllowed(req)) fail(403, "El tutor no está disponible durante los exámenes.");
+    const incoming = Array.isArray(req.body?.messages) && req.body.messages.at(-1);
+    if (incoming?.role !== "user" || typeof incoming.content !== "string" || !incoming.content.trim())
+      fail(400, "Escribe un mensaje para el tutor.");
+    const history = activity.tutorHistory(req.task.id, req.user.id);
+    const messages = history.turns.flatMap(turn => [
+      { role: "user", content: turn.content }, { role: "assistant", content: turn.reply },
+    ]);
+    messages.push({ role: "user", content: incoming.content });
+    while (messages.length > 1 && Buffer.byteLength(JSON.stringify(messages)) > 80000) messages.splice(0, 2);
+    const context = {
+      problem: req.task.problem,
+      language: languages.get(req.task.language),
+      approved: Boolean(history.plan),
+    };
+    return respondWithTutor(res, context, messages, evaluation =>
+      activity.saveTurn(req.task.id, req.user.id, incoming.content, req.body.kind, evaluation),
+    ).catch(next);
+  });
 
   function allowWork(req) {
     requireRole(req, "student");
@@ -220,10 +249,18 @@ export function classroom(dir, seb) {
       fail(400, "Revisa tu solución. El máximo es 60 000 bytes y la entrega requiere código.");
     const submitted = submit ? Date.now() : null;
     const args = [code, submitted, req.task.id, req.user.id];
-    const change = version === 0
-      ? sql("INSERT OR IGNORE INTO work(code,submitted,task,student,version) VALUES(?,?,?,?,1)").run(...args)
-      : sql("UPDATE work SET code=?,submitted=?,version=version+1 WHERE task=? AND student=? AND version=? AND submitted IS NULL").run(...args, version);
-    if (!change.changes) fail(409, "Tu borrador cambió en otra sesión. Vuelve a abrir la tarea antes de guardar.");
+    db.exec("BEGIN IMMEDIATE");
+    try {
+      const change = version === 0
+        ? sql("INSERT OR IGNORE INTO work(code,submitted,task,student,version) VALUES(?,?,?,?,1)").run(...args)
+        : sql("UPDATE work SET code=?,submitted=?,version=version+1 WHERE task=? AND student=? AND version=? AND submitted IS NULL").run(...args, version);
+      if (!change.changes) fail(409, "Tu borrador cambió en otra sesión. Vuelve a abrir la tarea antes de guardar.");
+      if (submit && !req.task.secure) activity.submit(req.task.id, req.user.id);
+      db.exec("COMMIT");
+    } catch (error) {
+      db.exec("ROLLBACK");
+      throw error;
+    }
     res.json({ version: version + 1, submitted });
   });
 
@@ -235,7 +272,7 @@ export function classroom(dir, seb) {
     req.body.language_id = req.task.language;
     next();
   });
-  registerRunner(taskRunner, "/terminal");
+  registerRunner(taskRunner, "/terminal", activity.beginAttempt);
   api.use("/tasks/:task", taskRunner);
 
   api.get("/tasks/:task/submissions", (req, res) => {
@@ -244,6 +281,13 @@ export function classroom(dir, seb) {
       CASE WHEN w.submitted IS NOT NULL THEN w.code END AS code
       FROM members m JOIN users u ON u.id=m.student LEFT JOIN work w ON w.student=u.id AND w.task=?
       WHERE m.course=? ORDER BY u.name,u.id`).all(req.task.id, req.task.course));
+  });
+  api.get("/tasks/:task/submissions/:student", (req, res) => {
+    requireRole(req, "teacher");
+    const student = req.params.student;
+    if (!sql("SELECT 1 FROM work WHERE task=? AND student=? AND submitted IS NOT NULL").get(req.task.id, student))
+      fail(404, "La entrega todavía no está disponible.");
+    res.json({ evidence: req.task.secure ? null : activity.review(req.task.id, student) });
   });
   api.post("/tasks/:task/submissions/:student", (req, res) => {
     requireRole(req, "teacher");

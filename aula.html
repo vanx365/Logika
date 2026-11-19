@@ -31,9 +31,10 @@
             <summary>Aviso de privacidad del aula</summary>
             <p>Logika guarda tu nombre, correo y rol para identificarte como alumno o profesor. Protege tu contraseña mediante una función de derivación y usa cookies para mantener tu sesión y, cuando corresponde, darte acceso al examen.</p>
             <p>El aula guarda tus clases y tareas. Si eres alumno, también guarda tus borradores, el código que entregas, la fecha de entrega, tus notas y los comentarios del profesor. El profesor de cada clase puede ver tu nombre, correo, estado de entrega y solución entregada para revisar y calificar tu trabajo.</p>
+            <p>En las tareas ordinarias, el aula guarda tu conversación con el tutor, el plan acordado y los intentos de ejecución con su código, entradas y resultados. Tu profesor puede consultar esa actividad cuando entregas la tarea.</p>
             <p>Estos datos se guardan en el servidor del aula. Al crear tu cuenta se registran la fecha y la versión del aviso que aceptaste. Para consultar tus datos o solicitar su corrección o eliminación, contacta a quien administra el aula en tu institución.</p>
           </details>
-          <label class="check"><input type="checkbox" name="privacyVersion" value="2026-11-18" disabled> He leído y acepto el aviso de privacidad del aula.</label>
+          <label class="check"><input type="checkbox" name="privacyVersion" value="2026-11-19" disabled> He leído y acepto el aviso de privacidad del aula.</label>
         </div>
         <button class="primary" id="account-action">Entrar</button>
       </form>
@@ -72,17 +73,44 @@
       <header><p class="eyebrow" id="task-course"></p><h1 id="task-title"></h1><p id="task-meta"></p></header>
       <p class="problem" id="problem"></p>
       <section id="student-work" hidden>
-        <label for="solution">Mi solución</label>
-        <textarea id="solution" class="solution" rows="12" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
-        <p id="work-state" role="status"></p>
-        <div class="actions">
-          <button id="save" class="secondary">Guardar borrador</button><button id="submit-work" class="primary">Entregar solución</button>
+        <p id="task-activity-notice" class="notice" hidden>Al entregar la tarea, tu profesor podrá revisar el código, el plan que hayas acordado con el tutor y la conversación. También verá los intentos de ejecución, con su código, entradas y resultados, aunque ejecutes con el tutor cerrado.</p>
+        <p id="task-private-tutor-notice" class="notice" hidden>Las nuevas consultas que hagas al tutor después de entregar la tarea o del cierre del plazo son privadas.</p>
+        <button type="button" class="secondary" id="task-tutor-toggle" aria-controls="task-tutor" aria-expanded="false" hidden>Consultar al tutor</button>
+        <div class="task-workspace" id="task-workspace">
+          <div>
+            <label for="solution">Mi solución</label>
+            <textarea id="solution" class="solution" rows="12" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
+            <p id="work-state" role="status"></p>
+            <div class="actions">
+              <button id="save" class="secondary">Guardar borrador</button><button id="submit-work" class="primary">Entregar solución</button>
+            </div>
+            <section class="exec-box">
+              <div class="actions"><h2>Terminal</h2><button class="secondary" id="run">Ejecutar</button><button class="quiet" id="stop" hidden>Detener</button></div>
+              <pre id="output" aria-live="polite">La salida de tu programa aparecerá aquí.</pre>
+              <form id="input-form" hidden><label>Entrada del programa<input name="line" autocomplete="off"></label><button class="secondary">Enviar</button></form>
+            </section>
+          </div>
+          <aside class="task-tutor" id="task-tutor" aria-labelledby="task-tutor-title" hidden>
+            <h2 id="task-tutor-title">Tutor de programación</h2>
+            <p class="task-tutor-help">Al consultar al tutor, Anthropic recibe tu mensaje y el enunciado. Si pides revisar código o ejecutas con el tutor abierto, también recibe el código y los datos de la ejecución, cuando corresponda.</p>
+            <div id="task-tutor-messages" class="task-tutor-messages" role="log" aria-label="Conversación con el tutor"></div>
+            <details id="task-tutor-plan" hidden>
+              <summary>Estrategia acordada</summary>
+              <p id="task-tutor-plan-text"></p>
+            </details>
+            <p id="task-tutor-status" role="status"></p>
+            <p id="task-tutor-error" class="feedback" role="alert" hidden></p>
+            <form id="task-tutor-form">
+              <label for="task-tutor-input" class="sr-only">Mensaje para el tutor</label>
+              <textarea id="task-tutor-input" rows="2" maxlength="3000" placeholder="Cuéntale cómo resolverías la tarea…" required></textarea>
+              <div class="task-tutor-actions">
+                <button type="submit" id="task-tutor-send" class="primary">Enviar</button>
+                <button type="button" id="task-tutor-code" class="text-button">Revisar mi código</button>
+                <button type="button" id="task-tutor-execution" class="text-button" hidden>Revisar última ejecución</button>
+              </div>
+            </form>
+          </aside>
         </div>
-        <section class="exec-box">
-          <div class="actions"><h2>Terminal</h2><button class="secondary" id="run">Ejecutar</button><button class="quiet" id="stop" hidden>Detener</button></div>
-          <pre id="output" aria-live="polite">La salida de tu programa aparecerá aquí.</pre>
-          <form id="input-form" hidden><label>Entrada del programa<input name="line" autocomplete="off"></label><button class="secondary">Enviar</button></form>
-        </section>
       </section>
       <section id="review" hidden><h2>Entregas de la clase</h2><div id="roster"></div></section>
     </section>

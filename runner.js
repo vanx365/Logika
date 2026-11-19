@@ -24,7 +24,7 @@ const runtimes = {
   63: { file: "main.js", command: "exec node /source/main.js" },
 };
 
-export function registerRunner(app, route = "/api/terminal") {
+export function registerRunner(app, route = "/api/terminal", beginAttempt) {
   app.post(route + "/input", (req, res) => {
     const session = sessions.get(req.body.id);
     if (!session?.process || session.finished || session.owner !== req.runnerOwner)
@@ -46,6 +46,7 @@ export function registerRunner(app, route = "/api/terminal") {
     session.process.stdin.write(req.body.input + "\n", (error) => {
       if (error)
         return res.status(410).json({ error: "El programa cerró la entrada." });
+      session.record({ type: "input", text: req.body.input + "\n" });
       res.json({ ok: true });
     });
   });
@@ -56,7 +57,7 @@ export function registerRunner(app, route = "/api/terminal") {
     res.json({ ok: true });
   });
 
-  app.post(route, async (req, res) => {
+  app.post(route, async (req, res, next) => {
     const runtime = runtimes[req.body.language_id];
     if (!runtime || typeof req.body.code !== "string" || !req.body.code.trim())
       return res
@@ -72,6 +73,20 @@ export function registerRunner(app, route = "/api/terminal") {
     const id = randomUUID();
     const name = "logika-" + id;
     const session = { owner: req.runnerOwner, process: null, finished: false, stop: () => {} };
+    let record;
+    try {
+      record = beginAttempt?.(req);
+    } catch (error) {
+      return next(error);
+    }
+    session.record = event => {
+      try {
+        record?.(event);
+      } catch (error) {
+        console.error("Error al registrar la ejecución", error.code || error.name);
+        session.stop("No se pudo guardar la actividad de esta ejecución.");
+      }
+    };
     sessions.set(id, session);
     let directory;
     let timer;
@@ -79,6 +94,7 @@ export function registerRunner(app, route = "/api/terminal") {
     let runnerError = "";
     let stopReason = "";
     const emit = (event) => {
+      session.record(event);
       if (!res.destroyed && !res.writableEnded)
         res.write(JSON.stringify(event) + "\n");
     };
@@ -167,6 +183,7 @@ export function registerRunner(app, route = "/api/terminal") {
       ) {
         emit({
           type: "error",
+          exitCode,
           message:
             /connect|daemon|pipe|engine/i.test(runnerError)
               ? "Docker está instalado, pero su motor no está disponible. Abre Docker Desktop. Si indica un problema de WSL o virtualización, completa esa configuración y reinicia Windows."

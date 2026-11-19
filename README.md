@@ -35,7 +35,7 @@ Inspirado en proyectos como **Maieutic**, y adaptado a estudiantes de primeros c
 
 - **Tutor socrático** con la API de Claude: una pregunta por mensaje, sin entregar la solución.
 - **Terminal interactiva con Docker:** ejecuta C++, Python, Java y JavaScript en contenedores aislados.
-- **Aula:** cuentas de profesor y alumno, clases por código, ejercicios con fecha de cierre, borradores, entregas, calificación de 0 a 20 y comentarios.
+- **Aula:** cuentas de profesor y alumno, clases por código, ejercicios con fecha de cierre, tutor socrático en tareas normales, borradores, entregas, calificación de 0 a 20 y comentarios.
 - **Modo examen en Windows** con Safe Exam Browser: el docente puede exigirlo por tarea.
 - **Pruebas automatizadas** de permisos, vencimientos, calificación y acceso a exámenes.
 
@@ -122,7 +122,7 @@ npm test        # ejecuta las pruebas automatizadas
 
 ## Privacidad y datos personales
 
-El aula guarda nombre, correo y entregas. Consulta el [Aviso de privacidad](AVISO_PRIVACIDAD.md), elaborado conforme a la Ley N.° 29733 de Protección de Datos Personales.
+El aula guarda nombre, correo y entregas. Al revisar una tarea normal, el profesor también puede consultar el plan aprobado, el diálogo con el tutor y las ejecuciones registradas hasta la entrega. [Aviso de privacidad](Aviso%20de%20Privacidad)
 
 ## Validación
 
@@ -138,7 +138,7 @@ Logika usa la API de Claude (Anthropic) como motor del tutor. Durante el desarro
 - [x] Aula con entregas y calificación
 - [x] Modo examen con Safe Exam Browser
 - [x] Validación formal con encuesta y consentimiento
-- [ ] Que el docente vea los intentos y el razonamiento del estudiante (plan y diálogo con el tutor) dentro del aula
+- [x] Revisión docente del plan, el diálogo con el tutor y los intentos de ejecución junto al código entregado en tareas normales
 
 ## Equipo
 

@@ -1,6 +1,6 @@
 # Aviso de privacidad de Logika
 
-*Versión 1.0 · 18 de noviembre de 2026*
+*Versión 1.1 · 19 de noviembre de 2026*
 
 Logika respeta tu privacidad y trata tus datos personales conforme a la **Ley N.° 29733, Ley de Protección de Datos Personales**. Este aviso explica qué datos recogemos, para qué los usamos y qué derechos tienes.
 
@@ -19,12 +19,13 @@ Logika es un proyecto de estudiantes de Ingeniería de Software de la Universida
 
 **Actividad en el aula**
 - Clases a las que perteneces, borradores y entregas de código, versiones, fecha de entrega, calificación y comentarios del profesor.
+- En las tareas normales, el aula registra tu conversación con el tutor y el plan que este aprueba. También registra cuándo ejecutas un programa, el código de cada intento, las entradas que envías a la terminal, la salida y los errores. Las ejecuciones se registran aunque tengas cerrado el tutor.
 
 **Tutor con IA**
 - Los mensajes que escribes al tutor, el enunciado, tu plan, el código que ejecutas, las entradas que ingresas y los resultados de la ejecución.
 
 **En tu navegador**
-- Borradores y el historial del ejercicio se guardan en el almacenamiento local de tu navegador.
+- En el laboratorio libre, los borradores y el historial del ejercicio se guardan en tu navegador.
 
 ## 3. Para qué los usamos
 
@@ -38,6 +39,7 @@ No usamos tus datos para publicidad ni los vendemos.
 ## 4. Con quién se comparten
 
 - **Tu profesor** ve tu nombre, tus entregas, tu calificación y los comentarios de las clases en las que participas.
+- Cuando entregas una tarea normal, el profesor de esa clase puede revisar el plan aprobado, el diálogo con el tutor y las ejecuciones registrados hasta ese momento junto con tu código final.
 - **Anthropic** procesa el contenido de la conversación con el tutor para generar sus respuestas, bajo las políticas de ese servicio.
 - Los datos del aula se guardan en una base de datos del equipo o servidor donde se ejecuta Logika, con acceso limitado a su administrador.
 

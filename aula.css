@@ -36,9 +36,42 @@
 .actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 10px 0; }
 .notice { background: var(--soft); border-left: 4px solid var(--green); color: var(--ink); padding: 12px 16px; margin-bottom: 16px; }
 .notice.error { border-color: var(--red); }
+.row h4 { font-size: 15px; margin: 14px 0 6px; }
+.submission-review { border-block: 1px solid var(--line); padding-bottom: 14px; }
+.submission-review h5 { font-size: 14px; margin: 12px 0 4px; }
+.submission-review details { padding: 4px 0; }
+.submission-review pre { margin: 4px 0 10px; }
+.review-plan, .review-turns p { white-space: pre-wrap; color: var(--ink); }
+.review-turns { padding-inline-start: 24px; }
+.review-turns li { margin-bottom: 14px; }
+.review-turns strong { display: block; margin-top: 6px; }
+.submission-review .review-attempt { border-left: 2px solid var(--line); padding-left: 12px; }
 #work-state, #tasks > p { margin-top: 12px; }
+#task-tutor-toggle { margin-bottom: 16px; }
+.task-workspace.with-tutor {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(265px, 340px);
+  align-items: start;
+  gap: 20px;
+}
+.task-tutor { padding: 16px; border: 1px solid var(--line); border-radius: 12px; }
+.task-tutor-help { margin-top: 6px; font-size: 12px; }
+.task-tutor-messages {
+  display: grid;
+  gap: 8px;
+  max-height: 290px;
+  margin: 12px 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.task-tutor .message { padding: 9px 12px; }
+.task-tutor .message.user { margin-left: 12px; }
+.task-tutor details { margin: 0 0 8px; padding: 0; }
+.task-tutor form { gap: 8px; }
+.task-tutor-actions { display: flex; flex-wrap: wrap; gap: 8px 12px; }
+#task-tutor-status:not(:empty), #task-tutor-error:not([hidden]) { margin: 6px 0; }
 @media (max-width: 720px) {
-  .class-layout, .pair { grid-template-columns: 1fr; }
+  .class-layout, .pair, .task-workspace.with-tutor { grid-template-columns: minmax(0, 1fr); }
   .header-actions { flex-wrap: wrap; justify-content: end; gap: 8px; }
   .topbar { gap: 12px; }
 }
