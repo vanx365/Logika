@@ -133,7 +133,7 @@ Logika usa la API de Claude (Anthropic) como motor del tutor. Durante el desarro
 - [x] Prototipo funcional con tutor, editor y terminal
 - [x] Aula con entregas y calificación
 - [x] Modo examen con Safe Exam Browser
-- [ ] Validación formal con encuesta y consentimiento
+- [x] Validación formal con encuesta y consentimiento
 - [ ] Que el docente vea los intentos y el razonamiento del estudiante (plan y diálogo con el tutor) dentro del aula
 
 ## Equipo
